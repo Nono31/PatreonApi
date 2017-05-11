@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patreon.Api.Tests", "Patreo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patreon.Console", "Patreon.Console\Patreon.Console.csproj", "{F0874C76-0BD1-4219-B166-F4655FC34096}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Net.Http.HttpListener", "System.Net.Http.HttpListener\System.Net.Http.HttpListener.csproj", "{9881A3AC-AEA1-474C-A241-50CD89341693}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Net.Http.HttpListener", "..\ext\System.Net.Http.HttpListener\System.Net.Http.HttpListener.csproj", "{878D10B1-3B1C-4694-B13B-E2BE7FA2F451}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{F0874C76-0BD1-4219-B166-F4655FC34096}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0874C76-0BD1-4219-B166-F4655FC34096}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0874C76-0BD1-4219-B166-F4655FC34096}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9881A3AC-AEA1-474C-A241-50CD89341693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9881A3AC-AEA1-474C-A241-50CD89341693}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9881A3AC-AEA1-474C-A241-50CD89341693}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9881A3AC-AEA1-474C-A241-50CD89341693}.Release|Any CPU.Build.0 = Release|Any CPU
+		{878D10B1-3B1C-4694-B13B-E2BE7FA2F451}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{878D10B1-3B1C-4694-B13B-E2BE7FA2F451}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{878D10B1-3B1C-4694-B13B-E2BE7FA2F451}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{878D10B1-3B1C-4694-B13B-E2BE7FA2F451}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

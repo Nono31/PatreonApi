@@ -4,7 +4,7 @@
     <Copyright>Copyright � Robert Sundstr�m 2016</Copyright>
     <VersionPrefix>1.0.1</VersionPrefix>
     <Authors>Robert Sundstr�m</Authors>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
     <DefineConstants>$(DefineConstants);NETCore</DefineConstants>
     <DebugType>portable</DebugType>
     <AssemblyName>System.Net.Http.HttpListener</AssemblyName>
@@ -21,6 +21,14 @@
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>E:\Workspaces\Patreon\build\Debug\netcoreapp1.1\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>E:\Workspaces\Patreon\build\Release</OutputPath>
   </PropertyGroup>
 
 </Project>
