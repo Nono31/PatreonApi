@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Copyright>Copyright � Robert Sundstr�m 2016</Copyright>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <Authors>Robert Sundstr�m</Authors>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);NETCore</DefineConstants>
+    <DebugType>portable</DebugType>
+    <AssemblyName>System.Net.Http.HttpListener</AssemblyName>
+    <OutputType>Library</OutputType>
+    <PackageId>System.Net.Http.HttpListener</PackageId>
+    <PackageTags>Http;Web Server</PackageTags>
+    <PackageProjectUrl>https://github.com/robertsundstrom/HttpListener</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/robertsundstrom/HttpListener/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+  </PropertyGroup>
+
+</Project>
