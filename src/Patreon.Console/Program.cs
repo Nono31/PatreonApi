@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics.Tracing;
 using System.Net.Http;
 using Patreon.Api;
+using Patreon.Core;
 
 namespace Patreon
 {
@@ -16,24 +18,36 @@ namespace Patreon
 
             Console.ReadKey();
         }
-
-        // client configuration
-        const string clientID = "";
-        const string clientSecret = "";
-
+        
         public async void Start()
         {
-            OAuth oAuth = new OAuth();
-            string redirectURI = "http://127.0.0.1:60135/";
-            var code = await oAuth.Authorize(clientID, redirectURI);
-            var token = await oAuth.PerformCodeExchange(clientID, clientSecret, code, redirectURI);
-            HttpClient InnerClient = new HttpClient();
-            InnerClient.BaseAddress = new Uri("https://api.patreon.com");
-            var request = new HttpRequestMessage(HttpMethod.Get, "oauth2/api/current_user");
-            InnerClient.BaseAddress = new Uri("https://api.patreon.com");
-            InnerClient.DefaultRequestHeaders.Add("Authorization", $"{token.TokenType} {token.AccessToken}");
-            var response = await InnerClient.SendAsync(request);
-            var result = response.Content.ReadAsStringAsync().Result;
+            Settings settings = new Settings(string.Empty);
+            settings.Load();
+            if (string.IsNullOrWhiteSpace(settings.AccessTokenSettings?.TokenType))
+            {
+                OAuth oAuth = new OAuth();
+                string redirectURI = settings.ApiSettings.RedirectUrl;
+                var code = await oAuth.Authorize(settings.ApiSettings.ClientId, redirectURI);
+                var token = await oAuth.PerformCodeExchange(settings.ApiSettings.ClientId,
+                    settings.ApiSettings.ClientSecret, code, redirectURI);
+                settings.AccessTokenSettings = new AccessTokenSettings(token);
+                settings.Save();
+            }
+            else
+            {
+
+                OAuth oAuth = new OAuth();
+                var token = await oAuth.RefreshToken(settings.ApiSettings.ClientId,
+                    settings.ApiSettings.ClientSecret, settings.AccessTokenSettings.RefreshToken);
+                settings.AccessTokenSettings = new AccessTokenSettings(token);
+                settings.Save();
+            }
+
+            PatreonClient client = new PatreonClient(settings.AccessTokenSettings);
+            var user = await client.GetCurrentUser();
+            Console.WriteLine($"User {user.Attributes.email} logged in");
+
+            Console.ReadLine();
         }
     }
 }

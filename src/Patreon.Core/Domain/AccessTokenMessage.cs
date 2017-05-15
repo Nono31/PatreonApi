@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
 
-namespace Patreon.Api.Domain
+namespace Patreon.Core.Domain
 {
-    public class AccessTokenReponse
+    public class AccessTokenMessage
     {
         [JsonProperty("access_token")]
         public string AccessToken { get; set; }

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ext\System.Net.Http.HttpListener\System.Net.Http.HttpListener.csproj" />
+    <ProjectReference Include="..\Patreon.Core\Patreon.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,22 +6,27 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Patreon.Api.Domain;
+using Patreon.Core.Domain;
 
 namespace Patreon.Api
 {
     public class OAuth
     {
-        const string authorizationEndpoint = "https://www.patreon.com/oauth2/authorize";
+        const string baseUrl = "https://www.patreon.com";
+        const string baseApiUrl = "https://api.patreon.com";
+        const string authorizationEndpoint = "oauth2/authorize";
+        const string tokenEndpoint = "oauth2/token";
 
         public async Task<string> Authorize(string clientId, string redirectURI)
         {
             string state = GenerateState();
             var authorizationRequest =
                 $"{authorizationEndpoint}?response_type=code&client_id={clientId}&redirect_uri={redirectURI}&state={state}";
+            var uri = new Uri(new Uri(baseUrl), authorizationRequest);
 
             // Creates an HttpListener to listen for requests on that redirect URI.
             var http = new HttpListener(IPAddress.Loopback, new Uri(redirectURI).Port);
@@ -29,7 +34,7 @@ namespace Patreon.Api
 
 
             // Opens request in the browser.
-            OpenBrowser(authorizationRequest);
+            OpenBrowser(uri.ToString());
 
 
             // Waits for the OAuth authorization response.
@@ -41,12 +46,12 @@ namespace Patreon.Api
             string responseString = "<html><head><meta http-equiv=\'refresh\'></head><body>Success</body></html>";
 
             await response.WriteContentAsync(responseString).ContinueWith((task) =>
-             {
-                 response.Close();
-                 http.Close();
-                 Console.WriteLine("HTTP server stopped.");
-             });
-            
+            {
+                response.Close();
+                http.Close();
+                Console.WriteLine("HTTP server stopped.");
+            });
+
             var queryString = context.Request.RequestUri.Query;
             var queryDictionary = HttpUtility.ParseQueryString(queryString);
 
@@ -64,14 +69,14 @@ namespace Patreon.Api
             return queryDictionary.GetValues("code").FirstOrDefault();
         }
 
-        public async Task<AccessTokenReponse> PerformCodeExchange(string clientId, string clientSecret, string code,
+        public async Task<AccessTokenMessage> PerformCodeExchange(string clientId, string clientSecret, string code,
             string redirectURI)
         {
             try
             {
                 HttpClient InnerClient = new HttpClient();
-                InnerClient.BaseAddress = new Uri("https://api.patreon.com");
-                var request = new HttpRequestMessage(HttpMethod.Post, "oauth2/token");
+                InnerClient.BaseAddress = new Uri(baseApiUrl);
+                var request = new HttpRequestMessage(HttpMethod.Post, tokenEndpoint);
                 request.Content = new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string, string>("code", code),
@@ -81,7 +86,8 @@ namespace Patreon.Api
                     new KeyValuePair<string, string>("redirect_uri", redirectURI)
                 });
                 var response = await InnerClient.SendAsync(request);
-                var token = JsonConvert.DeserializeObject<AccessTokenReponse>(response.Content.ReadAsStringAsync().Result);
+                var token = JsonConvert.DeserializeObject<AccessTokenMessage>(response.Content.ReadAsStringAsync()
+                    .Result);
                 return token;
             }
             catch (Exception ex)
@@ -90,7 +96,33 @@ namespace Patreon.Api
                 throw;
             }
         }
-        
+
+        public async Task<AccessTokenMessage> RefreshToken(string clientId, string clientSecret, string refreshToken)
+        {
+            try
+            {
+                HttpClient InnerClient = new HttpClient();
+                InnerClient.BaseAddress = new Uri(baseApiUrl);
+                var request = new HttpRequestMessage(HttpMethod.Post, tokenEndpoint);
+                request.Content = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("grant_type", "refresh_token"),
+                    new KeyValuePair<string, string>("refresh_token", refreshToken),
+                    new KeyValuePair<string, string>("client_id", clientId),
+                    new KeyValuePair<string, string>("client_secret", clientSecret)
+                });
+                var response = await InnerClient.SendAsync(request);
+                var result = JsonConvert.DeserializeObject<AccessTokenMessage>(response.Content.ReadAsStringAsync()
+                    .Result);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //TODO log
+                throw;
+            }
+        }
+
         private static string GenerateState()
         {
             return Guid.NewGuid().ToString("N");
@@ -108,7 +140,7 @@ namespace Patreon.Api
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     url = url.Replace("&", "^&");
-                    Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+                    Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") {CreateNoWindow = true});
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
@@ -124,6 +156,5 @@ namespace Patreon.Api
                 }
             }
         }
-
     }
 }

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Patreon.Api\Patreon.Api.csproj" />
+    <ProjectReference Include="..\Patreon.Core\Patreon.Core.csproj" />
   </ItemGroup>
 
 </Project>
