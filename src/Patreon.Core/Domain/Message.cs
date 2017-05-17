@@ -2,19 +2,44 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Patreon.Core.Domain
 {
-    public class Response
+    public class ComplexResponse
     {
-        [JsonProperty("data")]
-        public object Data { get; set; }
+        public List<IResponseObject> data { get; set; }
+        public List<IResponseObject> included { get; set; }
+    }
+    
+    public class SimpleResponse
+    {
+        public IResponseObject data  { get; set; }
+        public IResponseObject included { get; set; }
+    }
+    
+    
+    public interface IResponseObject
+    {
+         long id { get; set; }
     }
 
-    public class ResponseData
+    public class PledgeData : IResponseObject
     {
-        public ResponseType type { get; set; }
+        [JsonProperty("attributes")]
+        public Pledge attributes { get; set; }
+        public PledgeRelationships relationships { get; set; }
         public long id { get; set; }
     }
     
+    
+    public class IncludedDataCollection
+    {
+        public object[] included { get; set; }
+    }
+
+    public class DataCollection
+    {
+        public IResponseObject[] data { get; set; }
+    }
 }

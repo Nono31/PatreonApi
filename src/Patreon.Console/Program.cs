@@ -10,8 +10,8 @@ namespace Patreon
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Press any key to start...");
-            Console.ReadKey();
+            //Console.WriteLine("Press any key to start...");
+            //Console.ReadKey();
 
             Program p = new Program();
             p.Start();
@@ -45,7 +45,10 @@ namespace Patreon
 
             PatreonClient client = new PatreonClient(settings.AccessTokenSettings);
             var user = await client.GetCurrentUser();
-            Console.WriteLine($"User {user.Attributes.email} logged in");
+            Console.WriteLine($"UserData {user.Attributes.email} logged in");
+
+            var campaign = await client.GetCurrentCampaign();
+            var campagn = await client.GetAllPledges();
 
             Console.ReadLine();
         }
