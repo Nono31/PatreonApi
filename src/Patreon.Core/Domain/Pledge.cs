@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
+using Patreon.Core.Domain;
 
 namespace Patreon.Core.Domain
 {
@@ -10,13 +11,54 @@ namespace Patreon.Core.Domain
         public long id { get; set; }
 
         [JsonProperty("attributes")]
-        public PledgeAttributes Attributes { get; set; }
+        internal PledgeAttributes Attributes { get; set; }
 
+        [JsonProperty("relationships")]
+        public PledgeRelationships Relationships { get; set; }
+
+        #region Flattern
+
+        public int Amount
+        {
+            get => Attributes.Amount;
+            set => Attributes.Amount = value;
+        }
+
+        public DateTime CreatedAt
+        {
+            get => Attributes.CreatedAt;
+            set => Attributes.CreatedAt = value;
+        }
+
+        public DateTime? DeclinedSince
+        {
+            get => Attributes.DeclinedSince;
+            set => Attributes.DeclinedSince = value;
+        }
+
+        public int pledge_cap_cents
+        {
+            get => Attributes.pledge_cap_cents;
+            set => Attributes.pledge_cap_cents = value;
+        }
+
+        public bool patron_pays_fees
+        {
+            get => Attributes.patron_pays_fees;
+            set => Attributes.patron_pays_fees = value;
+        }
+
+        public int unread_count
+        {
+            get => Attributes.unread_count;
+            set => Attributes.unread_count = value;
+        }
     }
 
-    public class PledgeAttributes
-    {
+    #endregion
 
+    internal class PledgeAttributes
+    {
         /// <summary>
         /// Amount of pledge in cents
         /// </summary>
@@ -44,6 +86,7 @@ namespace Patreon.Core.Domain
         [JsonProperty("unread_count")]
         public int unread_count { get; set; }
     }
+
 
     public class PledgeRelationships
     {

@@ -6,6 +6,7 @@
         campaign,
         goal,
         reward,
-        user
+        user,
+        address
     }
 }

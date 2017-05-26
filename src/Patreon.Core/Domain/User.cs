@@ -12,7 +12,7 @@ namespace Patreon.Core.Domain
         //public ResponseType type { get; set; }
 
         [JsonProperty("attributes")]
-        public UserAttributes Attributes { get; set; }
+        internal UserAttributes Attributes { get; set; }
 
         [JsonProperty("relationships")]
         public UserRelationships Relationships { get; set; }
@@ -87,88 +87,111 @@ namespace Patreon.Core.Domain
         [JsonIgnore]
         public SocialConnections SocialConnections { get => Attributes.SocialConnections; set => Attributes.SocialConnections = value; }
         #endregion
+
+        internal class UserAttributes
+        {
+            [JsonProperty("about")]
+            public string about { get; set; }
+
+            [JsonProperty("created")]
+            public DateTime created { get; set; }
+
+            [JsonProperty("discord_id")]
+            public string discord_id { get; set; }
+
+            [JsonProperty("email")]
+            public string email { get; set; }
+
+            [JsonProperty("facebook")]
+            public string facebook { get; set; }
+
+            [JsonProperty("facebook_id")]
+            public string facebook_id { get; set; }
+
+            [JsonProperty("first_name")]
+            public string first_name { get; set; }
+
+            [JsonProperty("full_name")]
+            public string full_name { get; set; }
+
+            [JsonProperty("gender")]
+            public int gender { get; set; }
+
+            [JsonProperty("last_name")]
+            public string last_name { get; set; }
+
+            [JsonProperty("vanity")]
+            public string vanity { get; set; }
+
+            [JsonProperty("image_url")]
+            public string image_url { get; set; }
+
+            [JsonProperty("thumb_url")]
+            public string thumb_url { get; set; }
+
+            [JsonProperty("youtube")]
+            public string youtube { get; set; }
+
+            [JsonProperty("twitter")]
+            public string twitter { get; set; }
+
+            [JsonProperty("is_deleted")]
+            public bool is_deleted { get; set; }
+
+            [JsonProperty("is_email_verified")]
+            public bool is_email_verified { get; set; }
+
+            [JsonProperty("is_suspended")]
+            public bool is_suspended { get; set; }
+
+            [JsonProperty("is_nuked")]
+            public bool is_nuked { get; set; }
+
+            [JsonProperty("url")]
+            public string url { get; set; }
+
+            [JsonProperty("has_password")]
+            public bool has_password { get; set; }
+
+            [JsonProperty("twitch")]
+            public string twitch { get; set; }
+
+            [JsonProperty("social_connections")]
+            public SocialConnections SocialConnections { get; set; }
+        }
+
+        public class UserRelationships
+        {
+            [JsonProperty("pledges")]
+            public RelationshipCollection Pledges { get; set; }
+
+            [JsonProperty("cards")]
+            public RelationshipCollection cards { get; set; }
+
+            [JsonProperty("follows")]
+            public RelationshipCollection follows { get; set; }
+
+            [JsonProperty("campaign")]
+            public Relationship Campaign { get; set; }
+
+            [JsonProperty("presence")]
+            public object presence { get; set; }
+
+            [JsonProperty("session")]
+            public object session { get; set; }
+
+            [JsonProperty("locations")]
+            public object locations { get; set; }
+
+            [JsonProperty("current_user_follow")]
+            public object current_user_follow { get; set; }
+
+            [JsonProperty("pledge_to_current_user")]
+            public object pledge_to_current_user { get; set; }
+        }
     }
 
-    public class UserAttributes
-    {
-        [JsonProperty("about")]
-        public string about { get; set; }
-
-        [JsonProperty("created")]
-        public DateTime created { get; set; }
-
-        [JsonProperty("discord_id")]
-        public string discord_id { get; set; }
-
-        [JsonProperty("email")]
-        public string email { get; set; }
-
-        [JsonProperty("facebook")]
-        public string facebook { get; set; }
-
-        [JsonProperty("facebook_id")]
-        public string facebook_id { get; set; }
-
-        [JsonProperty("first_name")]
-        public string first_name { get; set; }
-
-        [JsonProperty("full_name")]
-        public string full_name { get; set; }
-
-        [JsonProperty("gender")]
-        public int gender { get; set; }
-
-        [JsonProperty("last_name")]
-        public string last_name { get; set; }
-
-        [JsonProperty("vanity")]
-        public string vanity { get; set; }
-
-        [JsonProperty("image_url")]
-        public string image_url { get; set; }
-
-        [JsonProperty("thumb_url")]
-        public string thumb_url { get; set; }
-
-        [JsonProperty("youtube")]
-        public string youtube { get; set; }
-
-        [JsonProperty("twitter")]
-        public string twitter { get; set; }
-
-        [JsonProperty("is_deleted")]
-        public bool is_deleted { get; set; }
-
-        [JsonProperty("is_email_verified")]
-        public bool is_email_verified { get; set; }
-
-        [JsonProperty("is_suspended")]
-        public bool is_suspended { get; set; }
-
-        [JsonProperty("is_nuked")]
-        public bool is_nuked { get; set; }
-
-        [JsonProperty("url")]
-        public string url { get; set; }
-
-        [JsonProperty("has_password")]
-        public bool has_password { get; set; }
-
-        [JsonProperty("twitch")]
-        public string twitch { get; set; }
-
-        [JsonProperty("social_connections")]
-        public SocialConnections SocialConnections { get; set; }
-    }
-
-    public class UserRelationships
-    {
-        [JsonProperty("campaign")]
-        public Campaign Campaign { get; set; }
-
-        [JsonProperty("pledges")]
-        public Pledge Pledges { get; set; }
-    }
+    
 
 
     public class SocialConnections

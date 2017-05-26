@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Tracing;
+using System.Linq;
 using System.Net.Http;
 using Patreon.Api;
 using Patreon.Core;
@@ -18,7 +19,7 @@ namespace Patreon
 
             Console.ReadKey();
         }
-        
+
         public async void Start()
         {
             Settings settings = new Settings(string.Empty);
@@ -45,12 +46,18 @@ namespace Patreon
 
             PatreonClient client = new PatreonClient(settings.AccessTokenSettings);
             var user = await client.GetCurrentUser();
-            Console.WriteLine($"UserData {user.Attributes.email} logged in");
+            Console.WriteLine($"UserData {user.email} logged in");
 
             var campaign = await client.GetCurrentCampaign();
-            var campagn = await client.GetAllPledges();
+            Console.WriteLine($"Campagn id {campaign.id} ");
+            Console.WriteLine($"you have {campaign.PatronCount} patren(s)");
+            Console.WriteLine($"for a total of {campaign.PledgeSum} cents");
+            var pledges = await client.GetAllPledges();
 
-            Console.ReadLine();
+            foreach (var pledge in pledges)
+            {
+                Console.WriteLine($"{pledge.Amount}");
+            }
         }
     }
 }

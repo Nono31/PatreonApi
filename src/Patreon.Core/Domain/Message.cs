@@ -23,23 +23,26 @@ namespace Patreon.Core.Domain
     {
          long id { get; set; }
     }
-
-    public class PledgeData : IResponseObject
+    
+    public class RelationshipCollection
     {
-        [JsonProperty("attributes")]
-        public Pledge attributes { get; set; }
-        public PledgeRelationships relationships { get; set; }
+        public Relationship[] data { get; set; }
+        public Links links { get; set; }
+        public Meta meta { get; set; }
+    }
+    public class Relationship : IResponseObject
+    {
         public long id { get; set; }
+        public string type { get; set; }
     }
-    
-    
-    public class IncludedDataCollection
+    public class Links 
     {
-        public object[] included { get; set; }
+        public string first { get; set; }
+        public string next { get; set; }
+        public string related { get; set; }
     }
-
-    public class DataCollection
+    public class Meta 
     {
-        public IResponseObject[] data { get; set; }
+        public int? count { get; set; }
     }
 }

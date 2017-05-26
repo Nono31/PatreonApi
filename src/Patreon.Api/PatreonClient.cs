@@ -12,6 +12,19 @@ using Patreon.Core.Domain;
 
 namespace Patreon.Api
 {
+    public class PatreonSerializerSettings : JsonSerializerSettings
+    {
+        public PatreonSerializerSettings()
+        {
+            TypeNameHandling = TypeNameHandling.Auto;
+            DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+            Formatting = Formatting.Indented;
+            Converters = new List<JsonConverter>()
+            {
+                new ResponseObjectConverter()
+            };
+        }
+    }
     public class PatreonClient
     {
         private AccessTokenSettings _accessTokenSettings;
@@ -20,16 +33,7 @@ namespace Patreon.Api
         public PatreonClient(AccessTokenSettings accessTokenSettings)
         {
             _accessTokenSettings = accessTokenSettings;
-            _jsonSerializerSettings = new JsonSerializerSettings()
-            {
-                TypeNameHandling = TypeNameHandling.Auto,
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-                Formatting = Formatting.Indented,
-                Converters = new List<JsonConverter>()
-                {
-                    new ResponseObjectConverter()
-                }
-            };
+            _jsonSerializerSettings = new PatreonSerializerSettings();
         }
 
         public async Task<User> GetCurrentUser()
@@ -48,7 +52,16 @@ namespace Patreon.Api
 
         public async Task<IEnumerable<Pledge>> GetAllPledges()
         {
-            string json = await Get(@"oauth2/api/current_user/campaigns?include=pledges");
+            //TODO pagination
+            string json = await Get($"oauth2/api/current_user/campaigns?include=pledges");
+            var response = JsonConvert.DeserializeObject<ComplexResponse>(json, _jsonSerializerSettings);
+            return response.included.OfType<Pledge>();
+        }
+
+        public async Task<IEnumerable<Pledge>> GetAllPledges(int campaignId)
+        {
+            string json = await Get($"oauth2/api/campaigns/{campaignId}/pledges");
+            //string json = await Get($"oauth2/api/campaigns/{campaignId}/pledges?sort=created&page%5Bcount%5D={pageSize}&page%5Bcursor%5D={cursor}");
             var response = JsonConvert.DeserializeObject<ComplexResponse>(json, _jsonSerializerSettings);
             return response.included.OfType<Pledge>();
         }
